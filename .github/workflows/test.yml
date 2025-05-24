@@ -1,20 +1,18 @@
-name: Free Disk Space (Ubuntu)
-on: push
+name: Test Cleanup
+
+on: [push]
 
 jobs:
-  free-disk-space:
+  cleanup-test:
     runs-on: ubuntu-latest
     steps:
-      # If there is a problem with this GitHub Actions, this step will fail
-      - name: Free Disk Space
-        uses: khulnasoft-lab/free-disk-space@master
-        with:
-          tool-cache: true
+      - name: Checkout
+        uses: actions/checkout@v4
 
-          # all of these default to true, but feel free to set to
-          # false if necessary for your workflow
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          swap-storage: true
+      - name: Ultra Cleanup
+        uses: ./ultra-disk-cleanup
+        with:
+          debug: true
+
+      - name: Print saved space
+        run: echo "Saved ${{ steps.cleanup.outputs.saved-space }} bytes"
